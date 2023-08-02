@@ -1,30 +1,46 @@
-
 const express = require('express');
-const router = express.Router();
-const campgrounds = require('../controllers/campgrounds');
-const catchAsync = require('../utils/catchAsync');
-const { isLoggedIn, isAuthor, validateCampground } = require('../middleware');
-
-
+const router = express.Router({ mergeParams: true });
+const { validateReview, isLoggedIn, isReviewAuthor } = require('../middleware');
 const Campground = require('../models/campground');
+const Review = require('../models/review');
+const reviews = require('../controllers/reviews');
+const ExpressError = require('../utils/ExpressError');
+const catchAsync = require('../utils/catchAsync');
 
-router.route('/')
-    .get(catchAsync(campgrounds.index))
-    .post(isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground))
+router.post('/', isLoggedIn, validateReview, catchAsync(reviews.createReview))
 
+router.delete('/:reviewId', isLoggedIn, isReviewAuthor, catchAsync(reviews.deleteReview))
 
-router.get('/new', isLoggedIn, campgrounds.renderNewForm)
-
-router.route('/:id')
-    .get(catchAsync(campgrounds.showCampground))
-    .put(isLoggedIn, isAuthor, validateCampground, catchAsync(campgrounds.updateCampground))
-    .delete(isLoggedIn, isAuthor, catchAsync(campgrounds.deleteCampground));
-
-router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(campgrounds.renderEditForm))
+module.exports = router;
 
 
 
-module.exports = router; 
+// const express = require('express');
+// const router = express.Router();
+// const campgrounds = require('../controllers/campgrounds');
+// const catchAsync = require('../utils/catchAsync');
+// const { isLoggedIn, isAuthor, validateCampground } = require('../middleware');
+
+
+// const Campground = require('../models/campground');
+
+// router.route('/')
+//     .get(catchAsync(campgrounds.index))
+//     .post(isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground))
+
+
+// router.get('/new', isLoggedIn, campgrounds.renderNewForm)
+
+// router.route('/:id')
+//     .get(catchAsync(campgrounds.showCampground))
+//     .put(isLoggedIn, isAuthor, validateCampground, catchAsync(campgrounds.updateCampground))
+//     .delete(isLoggedIn, isAuthor, catchAsync(campgrounds.deleteCampground));
+
+// router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(campgrounds.renderEditForm))
+
+
+
+// module.exports = router; 
 
 
 

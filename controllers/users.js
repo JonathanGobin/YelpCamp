@@ -31,15 +31,15 @@ module.exports.login = (req, res) => {
     res.redirect(redirectUrl);
 }
 
-
-// req#logout was not being provided a callback function (solution)
 module.exports.logout = (req, res) => {
-    req.logout(function (err) {
-        if (err) { return next(err); }
+    req.logout(err => {
+        if (err) {
+            console.log(err);
+            req.flash('error', 'Error logging out, please try again.');
+            return res.redirect('/campgrounds');
+        }
+        // req.session.destroy();
         req.flash('success', "Goodbye!");
         res.redirect('/campgrounds');
     });
 }
-
-
-
