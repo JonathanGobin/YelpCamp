@@ -28,7 +28,8 @@ const { getMaxListeners } = require('process');
 const MongoStore = require('connect-mongo');
 
 
-const dbUrl = 'mongodb://localhost:27017/yelp-camp'; 
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp'; 
+
 // 'mongodb://localhost:27017/yelp-camp' --> dbUrl when deploying to prod 
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
@@ -61,14 +62,17 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSantize());
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: 'thisshouldbeabettersecret!'
+        secret
     }
 });
+
 
 store.on("error", function (e) {
     console.log("SESSION STORE ERROR", e)
@@ -77,7 +81,7 @@ store.on("error", function (e) {
 const sessionConfig = {
     store,
     name: 'session',
-    secret: 'thisshouldbeabettersecret!',
+    secret,
     resave: false, // make session deprications go away 
     saveUninitialized: true, // make session deprications go away 
     cookie:{
@@ -138,8 +142,9 @@ app.use((err, req, res, next) => {
 })
 
 //app. listen 
-app.listen(3000, () => {
-    console.log('Serving on port 3000')
+const port = process.env.PORT || 3000; 
+app.listen(port, () => {
+    console.log(`Serving on port ${port}`)
 })
 
 //6483dceb10f06f211888aff5
