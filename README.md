@@ -1,6 +1,6 @@
 # YelpCamp
 
-This is my final project from my full-stack web developer bootcamp! Site is ment to imitate Yelp but for campgrounds. After this project I am moving on to learn ReactJs
+This is my final project from my full-stack web developer boot camp! The site is meant to imitate Yelp but for campgrounds. After this project, I am moving on to learn ReactJs
 
 ## Tech stack
 
