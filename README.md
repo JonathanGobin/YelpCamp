@@ -23,7 +23,7 @@ The site is meant to imitate Yelp but for campgrounds. After this project, I am 
 + Mapbox (cluster map & minimap)
 + Cloudinary (image storage)
 
-### Concepts learned from this bootcamp:
+### Concepts learned from this project:
 
 ![download](https://user-images.githubusercontent.com/74930516/208321672-43ee371a-8565-4a33-9f2b-44433603d3d1.png)
 
